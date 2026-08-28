@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#ff6a00" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png" />
+  <title>OrgonerBox</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <style>
+    :root{--bg:#0e1116;--panel:#171c24;--line:#2a3340;--text:#e8edf4;--muted:#93a0b3;--accent:#ff6a00;--ok:#3dd6c6}
+    *{box-sizing:border-box} body{margin:0;font-family:Segoe UI,system-ui,sans-serif;background:var(--bg);color:var(--text)}
+    header{position:sticky;top:0;background:linear-gradient(90deg,#141922,#1a1008);border-bottom:1px solid var(--line);padding:12px 16px;display:flex;gap:10px;align-items:center;z-index:9}
+    .logo{font-weight:800;letter-spacing:.04em}.logo span{color:var(--accent)}
+    nav{display:flex;gap:6px;flex-wrap:wrap}
+    nav button{background:#232b36;color:var(--text);border:1px solid var(--line);border-radius:8px;padding:8px 10px;cursor:pointer}
+    nav button.on{background:var(--accent);color:#111;font-weight:700;border-color:transparent}
+    main{max-width:980px;margin:0 auto;padding:16px 16px 80px}
+    .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;margin:0 0 12px}
+    h2{margin:0 0 8px;font-size:18px} p,li,label{color:var(--muted);font-size:14px;line-height:1.45}
+    input,select,button.act{background:#10151c;color:var(--text);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+    button.act{background:var(--accent);color:#111;font-weight:700;border:0;cursor:pointer}
+    .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+    .grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+    .chip{display:inline-block;background:#232b36;color:var(--muted);border-radius:999px;padding:2px 8px;font-size:11px}
+    table{width:100%;border-collapse:collapse;font-size:13px} td,th{border-bottom:1px solid var(--line);padding:6px 4px;text-align:left}
+    code{background:#0b0e13;padding:1px 5px;border-radius:4px}
+    .ok{color:var(--ok)} .warn{color:#ffb347}
+    footer{color:var(--muted);text-align:center;padding:20px;font-size:12px}
+  </style>
+</head>
+<body>
+<header>
+  <div class="logo">ORGONER<span>BOX</span></div>
+  <nav>
+    <button class="on" data-tab="home">Start</button>
+    <button data-tab="druck">DruckBox</button>
+    <button data-tab="werk">Werkzeug</button>
+    <button data-tab="freq">Frequenz</button>
+    <button data-tab="liste">Inventar</button>
+  </nav>
+</header>
+<main>
+<section id="home">
+  <div class="card">
+    <h2>Finale Sammel-App</h2>
+    <p>Alles aus den Chats, das <b>dein eigenes Programm</b> ist – nicht fremde Store-Apps wie DJI Fly oder iTorus.</p>
+    <p class="ok">Android: im Chrome Menü → „App installieren“. Windows: OrgonerBox.html öffnen.</p>
+  </div>
+  <div class="grid">
+    <div class="card"><h2>DruckBox</h2><p>Katalog RC / Drohne / Prusa / BattleBot / Spule.</p></div>
+    <div class="card"><h2>Werkzeug</h2><p>STL erzeugen, Mesh reparieren, Performance. CLI fertig.</p></div>
+    <div class="card"><h2>Frequenz</h2><p>Offline-Tongenerator (Web-Audio), Duty-Cycle, WAV-Export.</p></div>
+    <div class="card"><h2>Inventar</h2><p>Welche Chat-Apps packbar sind – und welche nicht.</p></div>
+  </div>
+</section>
+<section id="druck" hidden>
+  <div class="card">
+    <div class="row">
+      <input id="q" placeholder="Suchen …" style="flex:1;min-width:160px" />
+      <select id="cat"><option value="">Alle</option><option>RC</option><option>Drohne</option><option>Prusa</option><option>BattleBot</option><option>Spule</option><option>Kalibrierung</option></select>
+    </div>
+  </div>
+  <div class="grid" id="grid"></div>
+</section>
+<section id="werk" hidden>
+  <div class="card">
+    <h2>Programme-Final CLI</h2>
+    <p>python3 werkzeug.py create|repair|optimize|performance</p>
+    <div class="row">
+      <label>L <input id="L" type="number" value="20" style="width:70px"></label>
+      <label>B <input id="W" type="number" value="10" style="width:70px"></label>
+      <label>H <input id="H" type="number" value="5" style="width:70px"></label>
+      <button class="act" id="mkstl">Würfel-STL speichern</button>
+    </div>
+  </div>
+</section>
+<section id="freq" hidden>
+  <div class="card">
+    <h2>Tongenerator</h2>
+    <p class="warn">Nur Audio-Werkzeug. Keine Diagnose, keine Therapie.</p>
+    <div class="row">
+      <label>Hz <input id="hz" type="number" value="432" step="0.1" style="width:90px"></label>
+      <label>Duty % <input id="duty" type="number" value="50" min="1" max="99" style="width:70px"></label>
+      <label>Vol <input id="vol" type="range" min="0" max="100" value="15"></label>
+      <button class="act" id="play">Start / Stop</button>
+      <button class="act" id="wav">WAV</button>
+    </div>
+    <div class="row" id="presets"></div>
+  </div>
+</section>
+<section id="liste" hidden>
+  <div class="card">
+    <h2>Inventar</h2>
+    <p>Eigene Programme in dieser App. Fremde Store-Apps (DJI, iTorus, Tuya) werden nicht verpackt.</p>
+  </div>
+</section>
+</main>
+<footer>OrgonerBox 1.0 · 28.08.2026 · Tom / Orgoner-DE</footer>
+<script>
+const TABS=[...document.querySelectorAll('nav button')];
+TABS.forEach(b=>b.onclick=()=>{
+  TABS.forEach(x=>x.classList.toggle('on',x===b));
+  document.querySelectorAll('main>section').forEach(s=>s.hidden=s.id!==b.dataset.tab);
+});
+const MODELS=[
+  {n:'TT-02 Rally Halter',c:'RC',p:'Prusa CORE One L'},
+  {n:'Silvia S15 Body 1:14',c:'RC',p:'CORE One L'},
+  {n:'Tiny Whoop 31mm 4-Blatt',c:'Drohne',p:'Universal'},
+  {n:'Spark Klappnabe Prototype',c:'Drohne',p:'MK4'},
+  {n:'CORE One L Spool-Guide',c:'Prusa',p:'CORE One L'},
+  {n:'Sacred Cubit Wickler 63.5cm',c:'Spule',p:'CORE One L'},
+  {n:'BattleBot Oval Konzept',c:'BattleBot',p:'CORE One L'},
+  {n:'Kalibrierwürfel 20mm',c:'Kalibrierung',p:'Universal'},
+  {n:'Torus Testkörper',c:'Kalibrierung',p:'Universal'},
+  {n:'KF18 Body Mount',c:'RC',p:'CORE One L'}
+];
+function render(){
+  const t=(q.value||'').toLowerCase(), c=cat.value;
+  grid.innerHTML=MODELS.filter(m=>!c||m.c===c).filter(m=>!t||(m.n+m.c).toLowerCase().includes(t))
+    .map(m=>`<div class="card"><h2>${m.n}</h2><span class="chip">${m.c}</span> <span class="chip">${m.p}</span>
+    <p><a style="color:#ff6a00" href="https://www.printables.com/search/models?q=${encodeURIComponent(m.n)}" target="_blank">Printables</a></p></div>`).join('');
+}
+q.oninput=cat.onchange=render; render();
+const PRE=[35,110,432,528,727,787,880,5000];
+presets.innerHTML=PRE.map(f=>`<button class="act" data-f="${f}">${f} Hz</button>`).join('');
+presets.onclick=e=>{if(e.target.dataset.f){hz.value=e.target.dataset.f}};
+let ctx,osc,gain,on=false;
+function stop(){on=false;try{osc.stop()}catch(e){}osc=null;}
+play.onclick=()=>{
+  if(on){stop();return;}
+  ctx=ctx||new (window.AudioContext||window.webkitAudioContext)();
+  osc=ctx.createOscillator(); gain=ctx.createGain();
+  osc.type='square'; osc.frequency.value=+hz.value;
+  gain.gain.value=(+vol.value)/400;
+  osc.connect(gain).connect(ctx.destination); osc.start(); on=true;
+};
+wav.onclick=()=>{
+  const sr=44100,sec=3,n=sr*sec,f=+hz.value,d=(+duty.value)/100;
+  const buf=new ArrayBuffer(44+n*2); const v=new DataView(buf);
+  const w=(o,s)=>{for(let i=0;i<s.length;i++)v.setUint8(o+i,s.charCodeAt(i))};
+  w(0,'RIFF'); v.setUint32(4,36+n*2,true); w(8,'WAVE'); w(12,'fmt ');
+  v.setUint32(16,16,true); v.setUint16(20,1,true); v.setUint16(22,1,true);
+  v.setUint32(24,sr,true); v.setUint32(28,sr*2,true); v.setUint16(32,2,true); v.setUint16(34,16,true);
+  w(36,'data'); v.setUint32(40,n*2,true);
+  for(let i=0;i<n;i++){const t=i/sr; const s=((t*f)%1)<d?0.2:-0.2; v.setInt16(44+i*2,s*32767,true);}
+  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([buf],{type:'audio/wav'}));
+  a.download=`ton_${f}Hz.wav`; a.click();
+};
+function stlCube(l,w,h){
+  const L=l/2,B=w/2,C=h/2;
+  const V=[[-L,-B,-C],[L,-B,-C],[L,B,-C],[-L,B,-C],[-L,-B,C],[L,-B,C],[L,B,C],[-L,B,C]];
+  const F=[[0,2,1],[0,3,2],[4,5,6],[4,6,7],[0,1,5],[0,5,4],[1,2,6],[1,6,5],[2,3,7],[2,7,6],[3,0,4],[3,4,7]];
+  const buf=new ArrayBuffer(84+F.length*50); const v=new DataView(buf);
+  v.setUint32(80,F.length,true);
+  F.forEach((f,i)=>{
+    const o=84+i*50, a=V[f[0]],b=V[f[1]],c=V[f[2]];
+    const nx=(b[1]-a[1])*(c[2]-a[2])-(b[2]-a[2])*(c[1]-a[1]);
+    const ny=(b[2]-a[2])*(c[0]-a[0])-(b[0]-a[0])*(c[2]-a[2]);
+    const nz=(b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]);
+    [nx,ny,nz].forEach((x,k)=>v.setFloat32(o+k*4,x,true));
+    [a,b,c].forEach((p,k)=>{v.setFloat32(o+12+k*12,p[0],true);v.setFloat32(o+16+k*12,p[1],true);v.setFloat32(o+20+k*12,p[2],true);});
+  });
+  return new Blob([buf],{type:'model/stl'});
+}
+mkstl.onclick=()=>{
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(stlCube(+L.value,+W.value,+H.value));
+  a.download=`wuerfel_${L.value}x${W.value}x${H.value}.stl`; a.click();
+};
+if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js').catch(()=>{});}
+</script>
+</body>
+</html>
