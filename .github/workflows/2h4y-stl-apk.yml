@@ -14,7 +14,11 @@ jobs:
           java-version: '17'
       - name: Android SDK installieren
         run: |
-          sdkmanager --install 'platforms;android-35' 'build-tools;35.0.0'
+          SDKMANAGER=$(find /usr/local/lib/android/sdk/cmdline-tools -type f -name sdkmanager -print -quit)
+          echo "SDK Manager: $SDKMANAGER"
+          if [ -z "$SDKMANAGER" ]; then echo "SDK Manager fehlt"; exit 1; fi
+          yes | "$SDKMANAGER" --licenses >/dev/null || true
+          "$SDKMANAGER" --install 'platforms;android-35' 'build-tools;35.0.0'
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.10.2'
