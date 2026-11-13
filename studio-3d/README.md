@@ -18,7 +18,7 @@
 3. Die Installationsdatei liegt unter `android/app/build/outputs/apk/debug/app-debug.apk`.
 4. Oder das gesamte Paket als GitHub-Repository bereitstellen und den Workflow `.github/workflows/android-apk.yml` ausführen. Die APK erscheint als Build-Artefakt.
 
-**Build-Status dieser Lieferung:** Quellcode/HTML erstellt, JavaScript-Berechnungen getestet, Browser-Funktionstest dokumentiert. Die Android-APK konnte in der hiesigen Buildumgebung mangels Android SDK und erreichbaren Paket-Repositories nicht kompiliert werden. Dies ist **keine** fertig signierte APK.
+**Build-Status (13.11.2026):** HTML-Editor, JavaScript-Berechnungen und Browser-Export getestet. GitHub Actions Android Debug APK erfolgreich gebaut (Run 43359531243). Signierter APK-v2-Build; Installation auf echtem Android-Gerät bleibt ungetestet. Debug-Signatur kann bei zukünftigen CI-Builds wechseln.
 
 ## APK-Signatur und Updates
 Debug-APK wird automatisch mit lokalem Android-Debug-Zertifikat signiert. Release-APK benötigt eigenen dauerhaften Keystore, sonst sind spätere App-Updates unter derselben Paket-ID nicht möglich. Der sichtbare Update-Button bietet Versionsanzeige und konfigurierbare HTTPS-Update-Quelle. Vollautomatische In-App-APK-Aktualisierung ist in 1.0 nicht implementiert.
