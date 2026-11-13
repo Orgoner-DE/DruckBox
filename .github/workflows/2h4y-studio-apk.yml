@@ -5,7 +5,7 @@ on:
     branches: [studio-v1]
     paths:
       - 'studio-3d/android/**'
-      - '.github/workflows/android-apk.yml'
+      - '.github/workflows/2h4y-studio-apk.yml'
 permissions:
   contents: read
 jobs:
